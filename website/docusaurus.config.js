@@ -84,7 +84,7 @@ const config = {
         title: "DWN Protocols Collection",
         items: [
           {
-            href: "https://github.com/benri-io/dwn-protocols",
+            href: "https://github.com/andorsk/dwn-protocols",
             label: "GitHub",
             position: "right",
           },
