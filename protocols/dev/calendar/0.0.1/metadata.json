@@ -1,0 +1,13 @@
+{
+  "name": "calendar",
+  "protocol_path": "protocol.json",
+  "description": "calendar protocol",
+  "long_description": "still early version. calendar protocol for calendly like app",
+  "version": "v0.0.1",
+  "authors": [
+    {
+      "email": "andor@andor.us"
+    }
+  ],
+  "tags": ["calendar", "productivity"]
+}
