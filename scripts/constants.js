@@ -4,6 +4,6 @@ module.exports.MARKDOWN_FILENAME = "readme.md";
 module.exports.METADATA_FILENAME = "metadata.json";
 module.exports.PROTOCOLS_FOLDER = "protocols/";
 module.exports.LEVENSHTIEN_TRESHOLD = 2 / 3;
-module.exports.SITE_URL = "https://protocols.benri.io/";
+module.exports.SITE_URL = "https://protocols.andor.us/";
 module.exports.NOT_ALPHANUMERIC_PATTERN = /[^\w\s]/gi;
 module.exports.SPACE_PATTERN = /[\s-]/gi;

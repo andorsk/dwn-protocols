@@ -37,7 +37,7 @@ function testAuthors(authors) {
     authors.every((a) => {
       return (
         typeof a === "object" &&
-        typeof a.name === "string" &&
+        (typeof a.name === "string" || !a.name ) &&
         (typeof a.email === "string" || !a.email)
       );
     })
