@@ -6,6 +6,8 @@
 
 ---
 
+This is a fork from Benri, which is not longer maintaining this software as the entity no longer exists. 
+
 This repository contains a collection of compatible decentralized web node
 protocols that can be used to build and operate decentralized web applications.
 The specification for protocols can be found
