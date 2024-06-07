@@ -55,5 +55,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-    with:
-      path: ./website/build # Adjust this to point to your build output directory
+        with:
+          path: ./website/build # Adjust this to point to your build output directory
