@@ -1,125 +1,157 @@
 import React, { useEffect, useState } from "react";
-
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
-
 import styles from "./index.module.css";
 import protocolTree from "@site/static/data/protocol-directory-tree.json";
 import CodeBlock from "@theme/CodeBlock";
 
-function getRootFromProtocolTree() {
-  for (var i = 0; i < protocolTree.length; i++) {
-    if (protocolTree[i].name == "protocols") {
-      return protocolTree[i];
-    }
-  }
-  throw new Error("Could not find root of protocol tree");
+function getRootFromProtocolTree(tree) {
+  const root = tree.filter((item) => item.name === "protocols");
+  if (root.length === 0) throw new Error("Could not find protocols root");
+  if (root.length > 1) throw new Error("Found multiple protocols roots");
+  return root[0];
 }
 
 function buildNamespaces(root) {
-  var namespaces = [];
-  root.contents.forEach((child) => {
-    if (child.type == "directory") {
-      namespaces.push(child);
-    }
-  });
-  return namespaces;
+  return root.contents.filter((child) => child.type === "directory");
 }
 
 function getProtocols(namespaces, selected) {
-  for (var i = 0; i < namespaces.length; i++) {
-    if (namespaces[i].name === selected) {
-      return namespaces[i].contents;
-    }
-  }
-  throw new Error("Could not find version for namespace " + selected);
+  const namespace = namespaces.find((n) => n.name === selected);
+  console.log("getting namespace", selected);
+  if (!namespace) throw new Error(`Could not find namespace ${selected.name}`);
+  return namespace.contents.filter((item) => item.type === "directory");
 }
 
-function getVersions(protocols, selected) {
-  for (var i = 0; i < protocols.length; i++) {
-    if (protocols[i].name === selected) {
-      return protocols[i].contents;
-    }
-  }
-  throw new Error("Could not find version for " + selected);
+function getVersions(protocol) {
+  if (!protocol) throw new Error(`Could not find protocol ${selected}`);
+  return protocol.contents.filter((item) => item.type === "directory");
 }
 
-function getOptions() {
-  var channel = document.getElementById("channelSelect").value;
-  var protocol = document.getElementById("protocolSelect").value;
-  var version = document.getElementById("versionSelect").value;
-  return {
-    channel: channel,
-    protocol: protocol,
-    version: version,
-  };
+function buildPath({ namespace, protocol, version }) {
+  return `/protocols/${namespace}/${protocol}/${version}`;
 }
 
-function SearchBar() {
-  const [data, updateData] = useState();
-
-  function update() {
-    var channel = document.getElementById("channelSelect").value;
-    var protocol = document.getElementById("protocolSelect").value;
-    var version = document.getElementById("versionSelect").value;
-    fetchMetadata({
-      channel: channel,
-      protocol: protocol,
-      version: version,
-    })
-      .then(function (metadata) {
-        console.log(metadata);
-        updateData(metadata);
-      })
-      .catch(function (err) {
-        alert(err);
-      });
+async function fetchMetadata({ namespace, protocol, version }) {
+  const url = buildPath({ namespace, protocol, version }) + "/metadata.json";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch metadata");
+    return await response.json();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    throw error;
   }
+}
 
-  const root = getRootFromProtocolTree();
-  var namespaces = buildNamespaces(root);
+async function fetchProtocol({ namespace, protocol, version }) {
+  const url = buildPath({ namespace, protocol, version }) + "/protocol.json";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch protocol");
+    return await response.json();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    throw error;
+  }
+}
+
+function MetadataDisplay({ namespace, protocol, version }) {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetchMetadata({ namespace, protocol, version })
+      .then((metadata) => setData(metadata))
+      .catch((error) => console.error("Error fetching metadata:", error));
+  }, [namespace, protocol, version]); // Dependency array ensures effect runs only when these values change
+
+  return (
+    <div className="w-full h-full">
+      {data ? (
+        <CodeBlock language="json" title="Metadata" showLineNumbers={true}>
+          {JSON.stringify(data, null, 2)}
+        </CodeBlock>
+      ) : (
+        <p>Loading metadata...</p>
+      )}
+    </div>
+  );
+}
+
+function ProtocolDisplay({ namespace, protocol, version }) {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetchProtocol({ namespace, protocol, version })
+      .then((protocolData) => setData(protocolData))
+      .catch((error) => console.error("Error fetching protocol:", error));
+  }, [namespace, protocol, version]); // Dependency array
+
+  return (
+    <div className="w-full h-full">
+      {data ? (
+        <CodeBlock
+          language="json"
+          title="Protocol Definition"
+          showLineNumbers={true}
+        >
+          {JSON.stringify(data, null, 2)}
+        </CodeBlock>
+      ) : (
+        <p>Loading protocol...</p>
+      )}
+    </div>
+  );
+}
+
+function SearchBar({
+  selection,
+  onSelectionChange,
+  namespaces,
+  protocols,
+  versions,
+}) {
   return (
     <div className="searchBar container text-left">
       <div className="row">
-        <label htmlFor="channelSelect" className="col">
-          Channel
+        <label htmlFor="namespaceSelect" className="col">
+          Namespace
         </label>
-        <select className="form-select col" id="channelSelect">
-          <option defaultValue>{namespaces[0].name}</option>
-          {namespaces.slice(1).map((ns) => {
-            {
-              return (
-                <option key="{ns.name}" value="{ns.name}" onChange={update}>
-                  {" "}
-                  {ns.name}{" "}
-                </option>
-              );
-            }
-          })}
+        <select
+          className="form-select col"
+          id="namespaceSelect"
+          value={selection.namespace}
+          onChange={(e) =>
+            onSelectionChange({ ...selection, namespace: e.target.value })
+          }
+        >
+          {namespaces.map((ns) => (
+            <option key={ns.name} value={ns.name}>
+              {ns.name}
+            </option>
+          ))}
         </select>
       </div>
       <div className="row">
-        <label htmlFor="protocolSearch" className="col">
+        <label htmlFor="protocolSelect" className="col">
           Protocol
         </label>
         <select
           className="form-select col"
           id="protocolSelect"
-          onChange={update}
+          value={selection.protocol}
+          onChange={(e) =>
+            onSelectionChange({ ...selection, protocol: e.target.value })
+          }
         >
-          <option defaultValue>
-            {getProtocols(namespaces, "dev")[0].name}
-          </option>
-          <option>
-            {getProtocols(namespaces, "dev")
-              .slice(1)
-              .map((protocol) => {
-                return protocol.name;
-              })}
-          </option>
+          {protocols.map((protocol) => (
+            <option key={protocol.name} value={protocol.name}>
+              {protocol.name}
+            </option>
+          ))}
         </select>
       </div>
       <div className="row">
@@ -129,99 +161,78 @@ function SearchBar() {
         <select
           className="form-select col"
           id="versionSelect"
-          onChange={update}
+          value={selection.version}
+          onChange={(e) =>
+            onSelectionChange({ ...selection, version: e.target.value })
+          }
         >
-          <option defaultValue>0.0.1</option>
-          <option></option>
+          {versions.map((version) => (
+            <option key={version.name} value={version.name}>
+              {version.name}
+            </option>
+          ))}
         </select>
       </div>
-      <MetadataDisplay />
     </div>
   );
 }
 
-function buildPath({ namespace, protocol, version }) {
-  return `https://raw.githubusercontent.com/benri-io/dwn-protocols/main/protocols/${namespace}/${protocol}/${version}`;
-}
-
-async function fetchMetadata({ channel, protocol, version }) {
-  const resp = await fetch(
-    buildPath({ namespace: channel, version: version, protocol: protocol }) +
-      "/metadata.json"
-  )
-    .then((response) => {
-      return response.json();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  return resp;
-}
-
-async function fetchProtocol({ channel, protocol, version }) {
-  const resp = await fetch(
-    buildPath({ namespace: channel, version: version, protocol: protocol }) +
-      "/protocol.json"
-  )
-    .then((response) => {
-      return response.json();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  return resp;
-}
-
-function MetadataDisplay() {
-  const [data, updateData] = useState();
-  useEffect(() => {
-    const proc = fetchMetadata(getOptions()).then((data) => {
-      updateData(data);
-    });
-  });
-  return (
-    <div className="w-full h-full">
-      <CodeBlock language="js" title="Metadata" showLineNumbers>
-        {JSON.stringify(data, null, 2)}
-      </CodeBlock>
-    </div>
-  );
-}
-
-function ProtocolDisplay() {
-  const [data, updateData] = useState();
-  useEffect(() => {
-    const proc = fetchProtocol(getOptions()).then((data) => {
-      updateData(data);
-    });
-  });
-  return (
-    <div className="w-full h-full">
-      <CodeBlock language="js" title="Protocol Definition" showLineNumbers>
-        {JSON.stringify(data, null, 2)}
-      </CodeBlock>
-    </div>
-  );
-}
+const getProtocol = (protocols, selected) => {
+  const protocol = protocols.find((p) => p.name === selected);
+  console.log("getting protocol", selected);
+  if (!protocol) throw new Error(`Could not find protocol ${selected}`);
+  return protocol;
+};
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
+  const [selection, setSelection] = useState({
+    namespace: "",
+    protocol: "",
+    version: "",
+  });
+  const [namespaces, setNamespaces] = useState([]);
+  const [protocols, setProtocols] = useState([]);
+  const [versions, setVersions] = useState([]);
+
+  useEffect(() => {
+    try {
+      const root = getRootFromProtocolTree(protocolTree);
+      const ns = buildNamespaces(root);
+      if (ns.length === 0) throw new Error("No namespaces found");
+      setNamespaces(ns);
+      setSelection({ ...selection, namespace: ns[0].name });
+
+      const protocols = getProtocols(ns, selection.namespace);
+      setProtocols(protocols);
+      setSelection({ ...selection, protocol: protocols[0].name });
+
+      const protocol = getProtocol(protocols, selection.protocol);
+      const versions = getVersions(protocol);
+      setVersions(versions);
+      setSelection({ ...selection, version: versions[0].name });
+      console.log("selection is ", selection);
+    } catch (error) {
+      console.error("Error setting namespaces:", error);
+    }
+  }, [selection.namespace, selection.protocol, selection.version]);
+
   return (
-    <Layout title={`${siteConfig.title}`} description="Protocols Collections">
+    <Layout title={`${siteConfig.title}`} description="Explore Protocols">
       <main className="flex flex-col items-center justify-center h-full">
-        <div className="w-full">
-          <h2 className="text-left mb-4">
-            Choose a protocol that you would like to use
-          </h2>
-          <div className="flex flex-col md:flex-row justify-center">
-            <div id="protocolselector" className="md:w-1/2">
-              <SearchBar />
-            </div>
-            <div className="md:w-1/2 mt-4 md:mt-0">
-              <ProtocolDisplay className="bg-slate-600 w-full" />
-            </div>
+        <SearchBar
+          selection={selection}
+          onSelectionChange={setSelection}
+          namespaces={namespaces}
+          protocols={protocols}
+          versions={versions}
+        />
+        {selection.namespace && selection.protocol && selection.version && (
+          <div className="flex w-full">
+            <MetadataDisplay className="w-1/2 mr-4" {...selection} />
+            <ProtocolDisplay className="w-1/2 ml-4" {...selection} />
           </div>
-        </div>
+        )}
       </main>
     </Layout>
   );

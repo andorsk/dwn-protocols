@@ -21,3 +21,11 @@
   align-items: center;
   justify-content: center;
 }
+
+.displayContainer {
+  display: flex;
+  justify-content: space-between; /* Adjusts the spacing between child elements */
+  align-items: start; /* Aligns items at the top of the container */
+  width: 100%; /* Ensures the container takes full width of its parent */
+  flex-wrap: wrap; /* Allows items to wrap onto the next line on smaller screens */
+}

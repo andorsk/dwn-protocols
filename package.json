@@ -2,7 +2,7 @@
   "name": "dwn-protocols",
   "description": "A collection of DWN protocols",
   "version": "1.0.0",
-  "author": "Andor Kesselman <andor@benri.io>",
+  "author": "Andor Kesselman <andor@andor.us>",
   "license": "Apache",
   "scripts": {
     "test": "node scripts/validate.js"
