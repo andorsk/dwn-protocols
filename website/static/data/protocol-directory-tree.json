@@ -49,6 +49,26 @@
           },
           {
             "type": "directory",
+            "name": "calendar",
+            "contents": [
+              {
+                "type": "directory",
+                "name": "0.0.1",
+                "contents": [
+                  {
+                    "type": "file",
+                    "name": "metadata.json"
+                  },
+                  {
+                    "type": "file",
+                    "name": "protocol.json"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "directory",
             "name": "chat",
             "contents": [
               {
@@ -130,6 +150,26 @@
           {
             "type": "directory",
             "name": "email",
+            "contents": [
+              {
+                "type": "directory",
+                "name": "0.0.1",
+                "contents": [
+                  {
+                    "type": "file",
+                    "name": "metadata.json"
+                  },
+                  {
+                    "type": "file",
+                    "name": "protocol.json"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "directory",
+            "name": "fitness",
             "contents": [
               {
                 "type": "directory",
@@ -251,8 +291,8 @@
       }
     ],
     "report": {
-      "directories": 25,
-      "files": 24
+      "directories": 29,
+      "files": 28
     }
   }
 ]
