@@ -1,6 +1,7 @@
 # DWN Protocol Collection
 
 [![Protocol Pull Request](https://github.com/benri-io/dwn-protocols/actions/workflows/test-pr.yaml/badge.svg)](https://github.com/benri-io/dwn-protocols/actions/workflows/test-pr.yaml)
+[![Deploy to GitHub Pages](https://github.com/andorsk/dwn-protocols/actions/workflows/ghp.yml/badge.svg)](https://github.com/andorsk/dwn-protocols/actions/workflows/ghp.yml)
 
 **STATUS:** DRAFT: Nothing is set in stone yet. Feedback/suggestions, even breaking large ones, are welcome.
 
