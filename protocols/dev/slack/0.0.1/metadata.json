@@ -1,0 +1,14 @@
+{
+  "name": "slack",
+  "protocol_path": "protocol.json",
+  "description": "chat based protocol",
+  "long_description": "",
+  "version": "v0.0.1",
+  "authors": [
+    {
+      "name": "tbd",
+      "email": ""
+    }
+  ],
+  "tags": ["slack", "social"]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "image-sharing",
+  "protocol_path": "protocol.json",
+  "description": "sample protocol to share images",
+  "long_description": "",
+  "version": "v0.0.1",
+  "authors": [
+    {
+      "email": ""
+    }
+  ],
+  "tags": ["image-sharing"]
+}

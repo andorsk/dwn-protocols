@@ -1,0 +1,14 @@
+{
+  "name": "social-media",
+  "protocol_path": "protocol.json",
+  "description": "A social media protocol",
+  "long_description": "",
+  "version": "v0.0.1",
+  "authors": [
+    {
+      "name": "tbd",
+      "email": ""
+    }
+  ],
+  "tags": ["media", "social"]
+}

@@ -1,0 +1,84 @@
+{
+  "protocol": "https://example.com/protocol/image-sharing",
+  "types": {
+    "image": {
+      "schema": "https://example.com/schemas/image",
+      "dataFormats": [
+        "image/png",
+        "image/jpeg",
+        "image/gif"
+      ]
+    },
+    "metadata": {
+      "schema": "https://example.com/schemas/metadata",
+      "dataFormats": [
+        "application/json"
+      ]
+    },
+    "viewer": {
+      "schema": "https://example.com/schemas/viewer",
+      "dataFormats": [
+        "application/json"
+      ]
+    },
+    "writer": {
+      "schema": "https://example.com/schemas/writer",
+      "dataFormats": [
+        "application/json"
+      ]
+    }
+  },
+  "structure": {
+    "viewer": {
+      "$role": true
+    },
+    "writer": {
+      "$role": true
+    },
+    "image": {
+      "$size": {
+        "max": 500000000
+      },
+      "$actions": [
+        {
+          "role": "viewer",
+          "can": [
+            "read",
+            "query"
+          ]
+        },
+        {
+          "role": "writer",
+          "can": [
+            "create",
+            "update",
+            "delete"
+          ]
+        }
+      ],
+      "metadata": {
+        "$size": {
+          "max": 100000
+        },
+        "$actions": [
+          {
+            "role": "viewer",
+            "can": [
+              "read",
+              "query"
+            ]
+          },
+          {
+            "who": "author",
+            "of": "image",
+            "can": [
+              "create",
+              "update",
+              "delete"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
