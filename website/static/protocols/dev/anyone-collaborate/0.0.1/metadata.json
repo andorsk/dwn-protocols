@@ -1,0 +1,13 @@
+{
+  "name": "anyone-collaborate",
+  "protocol_path": "protocol.json",
+  "description": "A protocol which allows for anyone to collaborate",
+  "long_description": "",
+  "version": "v0.0.1",
+  "authors": [
+    {
+      "email": ""
+    }
+  ],
+  "tags": ["sample"]
+}

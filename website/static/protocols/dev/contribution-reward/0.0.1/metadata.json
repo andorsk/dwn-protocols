@@ -1,0 +1,13 @@
+{
+  "name": "contribution-reward",
+  "protocol_path": "protocol.json",
+  "description": "get rewards for a contribution",
+  "long_description": "",
+  "version": "v0.0.1",
+  "authors": [
+    {
+      "email": ""
+    }
+  ],
+  "tags": ["sample"]
+}

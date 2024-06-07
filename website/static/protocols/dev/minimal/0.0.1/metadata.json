@@ -1,0 +1,13 @@
+{
+  "name": "minimal",
+  "protocol_path": "protocol.json",
+  "description": "The most minimal protocol",
+  "long_description": "",
+  "version": "v0.0.1",
+  "authors": [
+    {
+      "email": ""
+    }
+  ],
+  "tags": ["minimal"]
+}

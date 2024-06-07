@@ -11,14 +11,14 @@ const config = {
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: "https://protocols.benri.io",
+  url: "https://protocols.andor.us",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "benri-io", // Usually your GitHub org/user name.
+  organizationName: "andorsk", // Usually your GitHub org/user name.
   projectName: "dwn-protocols", // Usually your repo name.
 
   onBrokenLinks: "throw",

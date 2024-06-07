@@ -1,0 +1,13 @@
+{
+  "name": "chat",
+  "protocol_path": "protocol.json",
+  "description": "sample protocol chat",
+  "long_description": "",
+  "version": "v0.0.1",
+  "authors": [
+    {
+      "email": ""
+    }
+  ],
+  "tags": ["chat", "social"]
+}
