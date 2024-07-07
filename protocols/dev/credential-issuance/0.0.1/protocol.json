@@ -1,0 +1,73 @@
+{
+  "protocol": "https://tblend.io/protocol/credential-exchange",
+  "published": false,
+  "types": {
+    "application": {
+      "schema": "presentationSchema.$id",
+      "dataFormats": ["application/json"]
+    },
+    "invoice": {
+      "schema": "invoiceSchema.$id",
+      "dataFormats": ["application/json"]
+    },
+    "manifest": {
+      "schema": "manifestSchema.$id",
+      "dataFormats": ["application/json"]
+    },
+    "response": {
+      "schema": "responseSchema.$id",
+      "dataFormats": ["application/json"]
+    }
+  },
+  "structure": {
+    "manifest": {
+      "$actions": [
+        {
+          "who": "anyone",
+          "can": ["read"]
+        }
+      ]
+    },
+    "application": {
+      "$actions": [
+        {
+          "who": "anyone",
+          "can": ["create"]
+        },
+        {
+          "who": "author",
+          "of": "application",
+          "can": ["read"]
+        }
+      ],
+      "response": {
+        "$actions": [
+          {
+            "who": "recipient",
+            "of": "application",
+            "can": ["create", "update"]
+          },
+          {
+            "who": "author",
+            "of": "application",
+            "can": ["read"]
+          }
+        ]
+      },
+      "invoice": {
+        "$actions": [
+          {
+            "who": "recipient",
+            "of": "application",
+            "can": ["create", "update"]
+          },
+          {
+            "who": "author",
+            "of": "application",
+            "can": ["read"]
+          }
+        ]
+      }
+    }
+  }
+}
