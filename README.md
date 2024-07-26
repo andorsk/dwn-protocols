@@ -7,7 +7,7 @@
 
 ---
 
-This is a fork from Benri, which is not longer maintaining this software as the entity no longer exists. 
+This is a fork from Benri, which is not longer maintaining this software as the entity no longer exists.  
 
 This repository contains a collection of compatible decentralized web node
 protocols that can be used to build and operate decentralized web applications.
@@ -48,4 +48,4 @@ This repository is licensed under the Apache 2 License.
 ### Contact
 
 If you have any questions or comments about this repository, please contact us
-at info@benri.io
+at andor@andor.us
